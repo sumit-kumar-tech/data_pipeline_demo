@@ -1,0 +1,23 @@
+{
+    "Decision Tree": {
+        "accuracy": 0.8044,
+        "precision": 0.7211,
+        "recall": 0.6393,
+        "f1_score": 0.6777,
+        "roc_auc": 0.8766
+    },
+    "Random Forest": {
+        "accuracy": 0.8043,
+        "precision": 0.7131,
+        "recall": 0.6557,
+        "f1_score": 0.6832,
+        "roc_auc": 0.876
+    },
+    "XGBoost": {
+        "accuracy": 0.8044,
+        "precision": 0.7211,
+        "recall": 0.6395,
+        "f1_score": 0.6779,
+        "roc_auc": 0.8769
+    }
+}

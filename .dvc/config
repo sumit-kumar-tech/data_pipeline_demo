@@ -1,0 +1,4 @@
+[core]
+    remote = localremote
+['remote "localremote"']
+    url = C:/Users/sumitme752/Desktop/dvc_data_store

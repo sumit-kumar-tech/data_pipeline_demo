@@ -1,0 +1,113 @@
+schema: '2.0'
+stages:
+  data_ingestion:
+    cmd: python src/data_ingestion.py
+    deps:
+    - path: data/sample_data.csv
+      hash: md5
+      md5: a431c1e1835076ca797e069356f2c772
+      size: 22759195
+    - path: src/data_ingestion.py
+      hash: md5
+      md5: 3d29966be37bc27bab477aef1d0c835d
+      size: 1302
+    params:
+      params.yaml:
+        data_ingestion.random_state: 42
+        data_ingestion.test_size: 0.2
+    outs:
+    - path: data/raw
+      hash: md5
+      md5: 156bda244464bbe76edb6131ef11a7d0.dir
+      size: 18008136
+      nfiles: 2
+  data_preprocessing:
+    cmd: python src/data_preprocessing.py
+    deps:
+    - path: data/raw
+      hash: md5
+      md5: 156bda244464bbe76edb6131ef11a7d0.dir
+      size: 18008136
+      nfiles: 2
+    - path: src/data_preprocessing.py
+      hash: md5
+      md5: efb7ff2d99e7add0c7589b35123d2fd3
+      size: 1343
+    outs:
+    - path: data/processed
+      hash: md5
+      md5: d888ff05bcc1b5b1f895c8e355a3ab0b.dir
+      size: 17702437
+      nfiles: 2
+  feature_engineering:
+    cmd: python src/feature_engineering.py
+    deps:
+    - path: data/processed
+      hash: md5
+      md5: d888ff05bcc1b5b1f895c8e355a3ab0b.dir
+      size: 17702437
+      nfiles: 2
+    - path: src/feature_engineering.py
+      hash: md5
+      md5: 9bdc84ee67ea02536d1eac08062d4955
+      size: 2872
+    params:
+      params.yaml:
+        feature_engineering.target_positive_class: B
+    outs:
+    - path: data/features
+      hash: md5
+      md5: ee230c7973430bd129eeaa0d393bad96.dir
+      size: 64698146
+      nfiles: 2
+  model_building:
+    cmd: python src/model_building.py
+    deps:
+    - path: data/features
+      hash: md5
+      md5: ee230c7973430bd129eeaa0d393bad96.dir
+      size: 64698146
+      nfiles: 2
+    - path: src/model_building.py
+      hash: md5
+      md5: dfbc63358e7e139c445de575b26de880
+      size: 3874
+    params:
+      params.yaml:
+        model_building.decision_tree.max_depth: 5
+        model_building.decision_tree.random_state: 42
+        model_building.random_forest.max_depth: 5
+        model_building.random_forest.n_estimators: 50
+        model_building.random_forest.random_state: 42
+        model_building.xgboost.learning_rate: 0.1
+        model_building.xgboost.max_depth: 5
+        model_building.xgboost.n_estimators: 50
+        model_building.xgboost.random_state: 42
+    outs:
+    - path: models
+      hash: md5
+      md5: fe46016f36f949931df14a5999ebb44b.dir
+      size: 411830
+      nfiles: 3
+  model_evaluation:
+    cmd: python src/model_evaluation.py
+    deps:
+    - path: data/features
+      hash: md5
+      md5: ee230c7973430bd129eeaa0d393bad96.dir
+      size: 64698146
+      nfiles: 2
+    - path: models
+      hash: md5
+      md5: fe46016f36f949931df14a5999ebb44b.dir
+      size: 411830
+      nfiles: 3
+    - path: src/model_evaluation.py
+      hash: md5
+      md5: 6b754be501f92c2913aa842c8ca4487a
+      size: 2769
+    outs:
+    - path: result/metrics.json
+      hash: md5
+      md5: 53835b8fc056110ed3fa0345e582c97f
+      size: 518
